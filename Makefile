@@ -7,9 +7,14 @@ clover: *.cpp *.hpp
 clean:
 	rm -f clover
 
-distdir = clover-`date +%Y-%m-%d`
+log:
+	git2cl > ChangeLog.txt
 
-dist:
+distdir = clover-`git log --date=short --pretty=format:%cd -1`
+
+dist: log
 	mkdir $(distdir)
-	cp *.?pp Makefile $(distdir)
-	zip -qrm $(distdir) $(distdir)
+	cp *.?pp Makefile *.txt $(distdir)
+	tar -cf $(distdir).tar $(distdir)
+	rm -r $(distdir)
+	gzip $(distdir).tar
