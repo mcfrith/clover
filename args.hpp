@@ -35,6 +35,7 @@ namespace args {
   extern bool verbose;  // print scores of significant motifs for each sequence
   extern double pseudocount;  // add to matrix entries
   extern uint random_seed;
+  extern uint strand;
 
   void parse(int argc, char **argv);  // parse the arguments using getopt
   void print(ostream & strm, uint mat_num, const seq_set_info & seq_info, const vector<seq_set_info> & bg_seq_info);

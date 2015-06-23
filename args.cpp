@@ -23,6 +23,7 @@ namespace args {
   bool verbose = false;
   double pseudocount = 0.375;
   uint random_seed = 1;  // if srand() isn't called at all, seed=1
+  uint strand = 2;
 }
 
 args::seq_set_info::seq_set_info(const vector<vector<uint> > & seqs)
@@ -153,6 +154,7 @@ Clover's behavior:\n\
      counts. If your matrices contain probabilities rather than counts, you\n\
      should probably set the pseudocount to zero.\n\
  -s  Seed for random number generator (default = 1).\n\
+ -z  Which DNA strand(s) to analyze: 1=forward, 2=both (default = 2).\n\
 \n\
 Example usage:\n\
   clover -t 0.05 mymotifs myseqs.fa background1.fa background2.fa\n\
@@ -174,11 +176,12 @@ Good luck finding those motifs!\n\
     "-v  verbose: print scores of significant motifs for each sequence\n"
     "-p  pseudocount to add to all matrix elements (" + tostring(pseudocount) + ")\n"
     "-s  seed for random number generator (" + tostring(random_seed) + ")\n"
+    "-z  strand: 1=forward, 2=both (" + tostring(strand) + ")\n"
     ;
 
   int c;
 
-  while ((c = getopt(argc, argv, "hr:t:u:ndmlvp:s:")) != -1)
+  while ((c = getopt(argc, argv, "hr:t:u:ndmlvp:s:z:")) != -1)
     switch (c) {
     case 'h':
       cout << doc << endl;
@@ -212,6 +215,9 @@ Good luck finding those motifs!\n\
       break;
     case 's':
       random_seed = atoi(optarg);
+      break;
+    case 'z':
+      strand = atoi(optarg);
       break;
     case '?':
       mcf::die("\n" + usage);  // "invalid option" message is printed by getopt

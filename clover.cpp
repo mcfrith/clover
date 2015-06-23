@@ -495,7 +495,8 @@ void clover::get_ds_motifs(const vector<matrix<float> > & ss_mots, vector<matvec
     fifth_column(matf, matd);
     ds_mots.back().push_back(matd);
     //continue;
-    if (!matf.is_rotate180()) {  // if the motif isn't palindromic
+    if (args::strand == 2 &&
+	!matf.is_rotate180()) {  // if the motif isn't palindromic
       matf.rotate180();  // reverse complement
       fifth_column(matf, matd);
       ds_mots.back().push_back(matd);
