@@ -232,6 +232,13 @@ double clover::combine_scores(const vector<double> & scores)
 
     // At this point, the dp vector holds the values: dp[1...j][j-1].
 
+    // special case for s == 0, to avoid 0 * inf
+    if (s <= 0 && s >= 0) {  // I think s must be >= 0, but just in case...
+      for (uint i = 1; i <= j; ++i)
+	dp[i] = (j-i) * dp[i] / j;
+      continue;
+    }
+
     for (uint i = 1; i <= j; ++i) {
       double dp_i1_j1 = dp_i_j1;
       /****/ dp_i_j1  = dp[i];
@@ -564,7 +571,7 @@ void clover::print_hits(uint wn, uint ws)
       cout << "  " << setw(wc) << h->location + 1
 	   << " - " << setw(wc) << h->location + motif_width;
       cout.setf(ios::left);  // left justification
-      if (ds_motifs[h->motif].size() == 1)
+      if (ds_motifs[h->motif].size() == 1 && args::strand == 2)
 	cout << "  " << "  p   ";
       else
 	cout << "  " << (h->strand == 0 ? "  +   " : "  -   ");
