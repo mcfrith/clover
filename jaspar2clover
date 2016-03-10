@@ -1,0 +1,46 @@
+#! /usr/bin/env python
+# Convert a file of JASPAR matrices to Clover's input format.
+# Martin C. Frith, 2012.
+# This file is in the Public Domain.
+
+import fileinput, optparse
+
+def fastaInput(lines):
+    head = ""
+    for line in lines:
+        line = line.rstrip()
+        if line.startswith(">"):
+            if head: yield head, body
+            head = line
+            body = []
+        elif line:
+            body.append(line)
+    if head: yield head, body
+
+usage = """%prog matrix_only.txt > converted_jaspar_matrices
+
+This program reads matrices in a format used by the JASPAR database,
+and writes them in a format that can be used by Clover.  The JASPAR
+format looks something like this:
+
+>MA0001.1 AGL3
+A  [ 0  3 79 40 66 48 65 11 65  0 ]
+C  [94 75  4  3  1  2  5  2  3  3 ]
+G  [ 1  0  3  4  1  0  5  3 28 88 ]
+T  [ 2 19 11 50 29 47 22 81  1  6 ]"""
+
+op = optparse.OptionParser(usage=usage)
+(opts, args) = op.parse_args()
+if not args: op.error("please specify an input file")
+
+for head, body in fastaInput(fileinput.input(args)):
+    matrix = []
+    for line in body:
+        line = "".join(i for i in line if i not in "[]")
+        w = line.split()
+        numbers = w[1:]
+        matrix.append(numbers)
+    matrix = zip(*matrix)
+    print head
+    for i in matrix:
+        print "\t".join(i)

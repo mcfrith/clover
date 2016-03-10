@@ -14,7 +14,7 @@ distdir = clover-`git log --date=short --pretty=format:%cd -1`
 
 dist: log
 	mkdir $(distdir)
-	cp *.?pp Makefile *.txt $(distdir)
+	cp *.?pp Makefile *.txt jaspar2clover $(distdir)
 	tar -cf $(distdir).tar $(distdir)
 	rm -r $(distdir)
 	gzip $(distdir).tar
