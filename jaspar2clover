@@ -3,6 +3,8 @@
 # Martin C. Frith, 2012.
 # This file is in the Public Domain.
 
+from __future__ import print_function
+
 import fileinput, optparse
 
 def fastaInput(lines):
@@ -41,6 +43,6 @@ for head, body in fastaInput(fileinput.input(args)):
         numbers = w[1:]
         matrix.append(numbers)
     matrix = zip(*matrix)
-    print head
+    print(head)
     for i in matrix:
-        print "\t".join(i)
+        print("\t".join(i))
